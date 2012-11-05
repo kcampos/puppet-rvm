@@ -15,7 +15,7 @@ define rvm::define::version (
     exec { "install-ruby-${name}":
       command => "/usr/local/rvm/bin/rvm install ${name}",
       unless  => "rvm list | grep ${name}",
-      timeout => '0',
+      timeout => '300',
       require => Class['rvm'],
     }
   } elsif $ensure == 'absent' {
