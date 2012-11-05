@@ -16,7 +16,4 @@ class rvm::config {
     source => 'puppet:///modules/rvm/bin/rvm_set_system_ruby',
   }
 
-  file { '/etc/profile.d/rvm.sh':
-    source => 'puppet:///modules/rvm/etc/profile.d/rvm.sh',
-  }
 }
