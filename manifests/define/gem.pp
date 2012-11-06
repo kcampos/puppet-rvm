@@ -24,14 +24,14 @@ define rvm::define::gem(
   # Setup proper install/uninstall commands based on gem version.
   if $gem_version == '' {
     $gem = {
-      'install'   => "rvm ${rubyset_version} gem install ${name} --no-ri --no-rdoc",
-      'uninstall' => "rvm ${rubyset_version} gem uninstall ${name}",
+      'install'   => "rvm ${rubyset_version}; gem install ${name} --no-ri --no-rdoc",
+      'uninstall' => "rvm ${rubyset_version}; gem uninstall ${name}",
       'lookup'    => "rvm gem list | grep ${name}",
     }
   } else {
     $gem = {
-      'install'   => "rvm ${rubyset_version} gem install ${name} -v ${gem_version} --no-ri --no-rdoc",
-      'uninstall' => "rvm ${rubyset_version} gem uninstall ${name} -v ${gem_version}",
+      'install'   => "rvm ${rubyset_version}; gem install ${name} -v ${gem_version} --no-ri --no-rdoc",
+      'uninstall' => "rvm ${rubyset_version}; gem uninstall ${name} -v ${gem_version}",
       'lookup'    => "rvm gem list | grep ${name} | grep ${gem_version}",
     }
   }
