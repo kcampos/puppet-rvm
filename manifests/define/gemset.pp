@@ -9,17 +9,28 @@ define rvm::define::gemset(
     path    => '/usr/local/rvm/bin:/bin:/sbin:/usr/bin:/usr/sbin',
   }
   $rvm_source = "source /usr/local/rvm/scripts/rvm"
-  if $ensure == 'present' {
-    exec { "rvm-gemset-create-${name}-${ruby_version}":
-      command => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset create ${name}'",
-      unless  => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset list | grep ${name}'",
-      require => [Class['rvm'], Exec["install-ruby-${ruby_version}"]],
+  
+  case $ensure {
+    'present': {
+      exec { "rvm-gemset-create-${name}-${ruby_version}":
+        command => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset create ${name}'",
+        unless  => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset list | grep ${name}'",
+        require => [Class['rvm'], Exec["install-ruby-${ruby_version}"]],
+      }
+    } 
+    'absent': {
+      exec { "rvm-gemset-delete-${name}-${ruby_version}":
+        command => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm --force gemset delete ${name}'",
+        onlyif  => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset list | grep ${name}'",
+        require => [Class['rvm'], Exec["install-ruby-${ruby_version}"]],
+      }
     }
-  } elsif $ensure == 'absent' {
-    exec { "rvm-gemset-delete-${name}-${ruby_version}":
-      command => "bash -c '${rvm_source} ; rvm use ${ruby_version} ;  rvm --force gemset delete ${name}'",
-      onlyif  => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset list | grep ${name}'",
-      require => [Class['rvm'], Exec["install-ruby-${ruby_version}"]],
+    'import': {
+      exec { "rvm-gemset-import-${name}-${ruby_version}":
+        command => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset import ${name}'",
+        onlyif  => "bash -c '${rvm_source} ; rvm use ${ruby_version} ; rvm gemset list | grep ${name}'",
+        require => [Class['rvm'], Exec["install-ruby-${ruby_version}"]],
+      }
     }
   }
 }
