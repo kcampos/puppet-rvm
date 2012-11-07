@@ -16,7 +16,8 @@ define rvm::define::gem(
   $rvm_ruby = "${rvm_path}/rubies"
   
   if $gemset == '' {
-    $rvm_depency = "install-ruby-${ruby_version}"        
+    $rvm_depency = "install-ruby-${ruby_version}"   
+    $rubyset_version = $ruby_version     
   } else {
     $rvm_depency = "rvm-gemset-create-${gemset}-${ruby_version}"        
     $rubyset_version = "${ruby_version}@${gemset}"
