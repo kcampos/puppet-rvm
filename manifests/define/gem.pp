@@ -46,7 +46,7 @@ define rvm::define::gem(
       require => [Class['rvm'], Exec[$rvm_depency]],
     }
   } elsif $ensure == 'absent' {
-    exec { "rvm-gem-uninstall-${name}-${version}":
+    exec { "rvm-gem-uninstall-${name}-${ruby_version}":
       command => $gem['uninstall'],
       onlyif  => $gem['lookup'],
       require => [Class['rvm'], Exec[$rvm_depency]],
