@@ -24,14 +24,14 @@ define rvm::define::gem_source(
   ## Begin Logic
   if $ensure == 'present' {
     exec { "rvm-gem_source-install-${name}-${ruby_version}":
-      command => $gem['install'],
-      unless  => $gem['lookup'],
+      command => $gem_source['install'],
+      unless  => $gem_source['lookup'],
       require => [Class['rvm'], Exec[$rvm_depency]],
     }
   } elsif $ensure == 'absent' {
     exec { "rvm-gem_source-uninstall-${name}-${ruby_version}":
-      command => $gem['uninstall'],
-      onlyif  => $gem['lookup'],
+      command => $gem_source['uninstall'],
+      onlyif  => $gem_source['lookup'],
       require => [Class['rvm'], Exec[$rvm_depency]],
     }    
   }
